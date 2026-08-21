@@ -1,7 +1,8 @@
 # oneko-smort
 
-A tiny red rubber duck that follows your pointer around the page. It is a
-duck-specific adaptation of [oneko.js](https://github.com/adryd325/oneko.js).
+A tiny red rubber duck that flaps after your pointer, then sits when it catches
+up. It is a duck-specific adaptation of
+[oneko.js](https://github.com/adryd325/oneko.js).
 
 ![The red duck sprite sheet](./red-duck-v3.gif)
 
@@ -10,7 +11,7 @@ duck-specific adaptation of [oneko.js](https://github.com/adryd325/oneko.js).
 Add the script before the closing `</body>` tag on your site:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/SmolNero/oneko-smort@main/oneko-smort-v3.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/SmolNero/oneko-smort@main/oneko-smort-v4.js"></script>
 ```
 
 The default sprite is loaded from the same directory as the script, so the
@@ -22,7 +23,7 @@ To use a different compatible sprite sheet:
 
 ```html
 <script
-  src="https://cdn.jsdelivr.net/gh/SmolNero/oneko-smort@main/oneko-smort-v3.js"
+  src="https://cdn.jsdelivr.net/gh/SmolNero/oneko-smort@main/oneko-smort-v4.js"
   data-duck="https://example.com/my-duck.gif"
 ></script>
 ```
@@ -47,7 +48,7 @@ Then open <http://localhost:8000> and move your pointer around the page.
 
 The sprite is a transparent `256 x 128` GIF containing an `8 x 4` grid of
 `32 x 32` frames. The movement mapping lives in `spriteSets` in
-`oneko-smort-v3.js`. Right-facing movement mirrors the left-facing source
+`oneko-smort-v4.js`. Right-facing movement mirrors the left-facing source
 frames. JavaScript moves the duck at the display refresh rate while the
 sprite animation advances independently, keeping movement smooth. Each running
 direction uses a four-frame foot-and-wing cycle, and every occupied cell has

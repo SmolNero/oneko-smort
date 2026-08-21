@@ -1,4 +1,4 @@
-// Compatibility loader. New embeds should load oneko-smort-v3.js directly.
+// Compatibility loader. New embeds should load oneko-smort-v4.js directly.
 (function loadCurrentOnekoSmort() {
   "use strict";
 
@@ -7,7 +7,7 @@
 
   const currentScript = document.createElement("script");
   currentScript.src = new URL(
-    "oneko-smort-v3.js",
+    "oneko-smort-v4.js",
     script.src || document.baseURI,
   ).href;
   currentScript.async = false;
