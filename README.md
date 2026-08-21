@@ -48,7 +48,9 @@ The sprite is a transparent `256 x 128` GIF containing an `8 x 4` grid of
 `32 x 32` frames. The movement mapping lives in `spriteSets` in
 `oneko-smort.js`. Left-facing movement reuses and mirrors the right-facing
 duck frames. JavaScript moves the duck at the display refresh rate while the
-sprite animation advances independently, keeping movement smooth.
+sprite animation advances independently, keeping movement smooth. Each running
+direction uses a four-frame foot cycle, and every occupied cell has transparent
+padding to prevent neighboring frames from bleeding into view.
 
 ## Credits
 

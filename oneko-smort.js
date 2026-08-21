@@ -16,7 +16,7 @@
   const sheetHeight = 128;
   const duckSpeed = 100;
   const stopDistance = 48;
-  const spriteFrameDuration = 180;
+  const spriteFrameDuration = 110;
   const storageKey = "oneko-smort-position";
   const configuredDuck = script?.dataset.duck;
   const duckFile = configuredDuck
@@ -43,49 +43,65 @@
 
   // Each frame is [column, row, mirrorHorizontally] in the 8 x 4 sheet.
   const spriteSets = {
-    idle: [[3, 3]],
+    idle: [[0, 3]],
     flapping: [
-      [3, 3],
-      [1, 3],
-      [1, 2],
-      [1, 3],
+      [0, 3],
+      [4, 3],
+      [5, 3],
+      [4, 3],
     ],
-    tired: [[3, 1]],
+    tired: [[1, 3]],
     sleeping: [
-      [2, 0],
-      [2, 1],
+      [2, 3],
+      [3, 3],
     ],
     N: [
-      [6, 3],
-      [7, 3],
+      [0, 2],
+      [1, 2],
+      [2, 2],
+      [3, 2],
     ],
     NE: [
-      [6, 0],
-      [6, 1],
+      [0, 0],
+      [1, 0],
+      [2, 0],
+      [3, 0],
     ],
     E: [
+      [0, 0],
       [1, 0],
-      [1, 1],
+      [2, 0],
+      [3, 0],
     ],
     SE: [
-      [2, 2],
-      [2, 3],
+      [0, 0],
+      [1, 0],
+      [2, 0],
+      [3, 0],
     ],
     S: [
-      [0, 0],
       [0, 1],
+      [1, 1],
+      [2, 1],
+      [3, 1],
     ],
     SW: [
-      [2, 2, true],
-      [2, 3, true],
+      [0, 0, true],
+      [1, 0, true],
+      [2, 0, true],
+      [3, 0, true],
     ],
     W: [
+      [0, 0, true],
       [1, 0, true],
-      [1, 1, true],
+      [2, 0, true],
+      [3, 0, true],
     ],
     NW: [
-      [6, 0, true],
-      [6, 1, true],
+      [0, 0, true],
+      [1, 0, true],
+      [2, 0, true],
+      [3, 0, true],
     ],
   };
 
