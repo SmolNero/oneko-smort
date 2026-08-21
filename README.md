@@ -3,26 +3,26 @@
 A tiny red rubber duck that follows your pointer around the page. It is a
 duck-specific adaptation of [oneko.js](https://github.com/adryd325/oneko.js).
 
-![The red duck sprite sheet](./red-duck-v2.gif)
+![The red duck sprite sheet](./red-duck-v3.gif)
 
 ## Use it
 
 Add the script before the closing `</body>` tag on your site:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/SmolNero/oneko-smort@main/oneko-smort.js?v=2"></script>
+<script src="https://cdn.jsdelivr.net/gh/SmolNero/oneko-smort@main/oneko-smort.js?v=3"></script>
 ```
 
 The default sprite is loaded from the same directory as the script, so the
 single tag is all you need. For a production site, use a tagged release such
-as `@v1.0.0` instead of `@main` to pin a stable version. The `?v=2` suffix
+as `@v1.0.0` instead of `@main` to pin a stable version. The `?v=3` suffix
 prevents browsers from reusing the earlier cached sprite implementation.
 
 To use a different compatible sprite sheet:
 
 ```html
 <script
-  src="https://cdn.jsdelivr.net/gh/SmolNero/oneko-smort@main/oneko-smort.js?v=2"
+  src="https://cdn.jsdelivr.net/gh/SmolNero/oneko-smort@main/oneko-smort.js?v=3"
   data-duck="https://example.com/my-duck.gif"
 ></script>
 ```
@@ -50,8 +50,8 @@ The sprite is a transparent `256 x 128` GIF containing an `8 x 4` grid of
 `oneko-smort.js`. Left-facing movement reuses and mirrors the right-facing
 duck frames. JavaScript moves the duck at the display refresh rate while the
 sprite animation advances independently, keeping movement smooth. Each running
-direction uses a four-frame foot cycle, and every occupied cell has transparent
-padding to prevent neighboring frames from bleeding into view.
+direction uses a four-frame foot-and-wing cycle, and every occupied cell has
+transparent padding to prevent neighboring frames from bleeding into view.
 
 ## Credits
 

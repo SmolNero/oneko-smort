@@ -21,7 +21,7 @@
   const configuredDuck = script?.dataset.duck;
   const duckFile = configuredDuck
     ? new URL(configuredDuck, document.baseURI).href
-    : new URL("red-duck-v2.gif", script?.src || document.baseURI).href;
+    : new URL("red-duck-v3.gif", script?.src || document.baseURI).href;
   const persistPosition =
     script?.dataset.persistPosition?.toLowerCase() !== "false";
 
@@ -62,22 +62,22 @@
       [3, 2],
     ],
     NE: [
-      [0, 0],
-      [1, 0],
-      [2, 0],
-      [3, 0],
+      [0, 0, true],
+      [1, 0, true],
+      [2, 0, true],
+      [3, 0, true],
     ],
     E: [
-      [0, 0],
-      [1, 0],
-      [2, 0],
-      [3, 0],
+      [0, 0, true],
+      [1, 0, true],
+      [2, 0, true],
+      [3, 0, true],
     ],
     SE: [
-      [0, 0],
-      [1, 0],
-      [2, 0],
-      [3, 0],
+      [0, 0, true],
+      [1, 0, true],
+      [2, 0, true],
+      [3, 0, true],
     ],
     S: [
       [0, 1],
@@ -86,22 +86,22 @@
       [3, 1],
     ],
     SW: [
-      [0, 0, true],
-      [1, 0, true],
-      [2, 0, true],
-      [3, 0, true],
+      [0, 0],
+      [1, 0],
+      [2, 0],
+      [3, 0],
     ],
     W: [
-      [0, 0, true],
-      [1, 0, true],
-      [2, 0, true],
-      [3, 0, true],
+      [0, 0],
+      [1, 0],
+      [2, 0],
+      [3, 0],
     ],
     NW: [
-      [0, 0, true],
-      [1, 0, true],
-      [2, 0, true],
-      [3, 0, true],
+      [0, 0],
+      [1, 0],
+      [2, 0],
+      [3, 0],
     ],
   };
 
