@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="A tiny red rubber duck that follows your pointer around the page."
+    >
+    <title>oneko-smort</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: ui-rounded, "Arial Rounded MT Bold", system-ui, sans-serif;
+        color: #46120f;
+        background: #fff5df;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100svh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        overflow-x: hidden;
+        background:
+          radial-gradient(circle at 18% 18%, #ffdca8 0 5rem, transparent 5.1rem),
+          radial-gradient(circle at 88% 78%, #ffb8a6 0 8rem, transparent 8.1rem),
+          #fff5df;
+      }
+
+      main {
+        width: min(42rem, calc(100% - 2rem));
+        padding: clamp(2rem, 7vw, 5rem);
+        border: 3px solid #46120f;
+        border-radius: 2rem 0.5rem 2rem 0.5rem;
+        background: rgba(255, 250, 235, 0.92);
+        box-shadow: 12px 12px 0 #e94032;
+      }
+
+      .eyebrow {
+        margin: 0 0 0.6rem;
+        color: #c82720;
+        font-size: 0.8rem;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(3rem, 13vw, 6.5rem);
+        line-height: 0.88;
+        letter-spacing: -0.07em;
+      }
+
+      .lede {
+        max-width: 31rem;
+        margin: 1.6rem 0 0;
+        font-size: clamp(1rem, 3vw, 1.3rem);
+        line-height: 1.55;
+      }
+
+      code {
+        padding: 0.12rem 0.35rem;
+        border-radius: 0.35rem;
+        color: #fff5df;
+        background: #46120f;
+        font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+        font-size: 0.85em;
+      }
+
+      .hint {
+        margin: 2rem 0 0;
+        font-size: 0.85rem;
+        font-weight: 750;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      @media (max-width: 36rem) {
+        main {
+          padding: 2.5rem 1.5rem;
+          box-shadow: 7px 7px 0 #e94032;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="eyebrow">Tiny duck, important mission</p>
+      <h1>oneko-<br>smort</h1>
+      <p class="lede">
+        A red rubber duck that waddles after your pointer, flaps when bored,
+        and eventually falls asleep. Add it to any page with one
+        <code>&lt;script&gt;</code> tag.
+      </p>
+      <p class="hint">Move your pointer or tap somewhere</p>
+    </main>
+
+    <script src="./oneko-smort.js"></script>
+  </body>
+</html>
