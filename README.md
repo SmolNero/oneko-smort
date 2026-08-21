@@ -3,25 +3,26 @@
 A tiny red rubber duck that follows your pointer around the page. It is a
 duck-specific adaptation of [oneko.js](https://github.com/adryd325/oneko.js).
 
-![The red duck sprite sheet](./red-duck.gif)
+![The red duck sprite sheet](./red-duck-v2.gif)
 
 ## Use it
 
 Add the script before the closing `</body>` tag on your site:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/SmolNero/oneko-smort@main/oneko-smort.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/SmolNero/oneko-smort@main/oneko-smort.js?v=2"></script>
 ```
 
 The default sprite is loaded from the same directory as the script, so the
 single tag is all you need. For a production site, use a tagged release such
-as `@v1.0.0` instead of `@main` to pin a stable version.
+as `@v1.0.0` instead of `@main` to pin a stable version. The `?v=2` suffix
+prevents browsers from reusing the earlier cached sprite implementation.
 
 To use a different compatible sprite sheet:
 
 ```html
 <script
-  src="https://cdn.jsdelivr.net/gh/SmolNero/oneko-smort@main/oneko-smort.js"
+  src="https://cdn.jsdelivr.net/gh/SmolNero/oneko-smort@main/oneko-smort.js?v=2"
   data-duck="https://example.com/my-duck.gif"
 ></script>
 ```

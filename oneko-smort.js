@@ -21,7 +21,7 @@
   const configuredDuck = script?.dataset.duck;
   const duckFile = configuredDuck
     ? new URL(configuredDuck, document.baseURI).href
-    : new URL("red-duck.gif", script?.src || document.baseURI).href;
+    : new URL("red-duck-v2.gif", script?.src || document.baseURI).href;
   const persistPosition =
     script?.dataset.persistPosition?.toLowerCase() !== "false";
 
