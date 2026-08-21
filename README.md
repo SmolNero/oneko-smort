@@ -3,12 +3,11 @@
 A tiny red rubber duck that follows your pointer around the page. It is a
 duck-specific adaptation of [oneko.js](https://github.com/adryd325/oneko.js).
 
-![The red duck sprite sheet](./red_duck_sprite_256x128.png)
+![The red duck sprite sheet](./red-duck.gif)
 
 ## Use it
 
-Once this repository is public, add the script before the closing `</body>`
-tag on your site:
+Add the script before the closing `</body>` tag on your site:
 
 ```html
 <script src="https://cdn.jsdelivr.net/gh/SmolNero/oneko-smort@main/oneko-smort.js"></script>
@@ -23,7 +22,7 @@ To use a different compatible sprite sheet:
 ```html
 <script
   src="https://cdn.jsdelivr.net/gh/SmolNero/oneko-smort@main/oneko-smort.js"
-  data-duck="https://example.com/my-duck.png"
+  data-duck="https://example.com/my-duck.gif"
 ></script>
 ```
 
@@ -45,10 +44,11 @@ Then open <http://localhost:8000> and move your pointer around the page.
 
 ## Sprite format
 
-The sprite is a transparent `256 x 128` PNG containing an `8 x 4` grid of
+The sprite is a transparent `256 x 128` GIF containing an `8 x 4` grid of
 `32 x 32` frames. The movement mapping lives in `spriteSets` in
 `oneko-smort.js`. Left-facing movement reuses and mirrors the right-facing
-duck frames.
+duck frames. JavaScript moves the duck at the display refresh rate while the
+sprite animation advances independently, keeping movement smooth.
 
 ## Credits
 

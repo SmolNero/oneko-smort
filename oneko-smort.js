@@ -12,15 +12,16 @@
   if (reducedMotion || document.getElementById("oneko-smort")) return;
 
   const frameSize = 32;
-  const duckSpeed = 10;
+  const sheetWidth = 256;
+  const sheetHeight = 128;
+  const duckSpeed = 100;
+  const stopDistance = 48;
+  const spriteFrameDuration = 180;
   const storageKey = "oneko-smort-position";
   const configuredDuck = script?.dataset.duck;
   const duckFile = configuredDuck
     ? new URL(configuredDuck, document.baseURI).href
-    : new URL(
-        "red_duck_sprite_256x128.png",
-        script?.src || document.baseURI,
-      ).href;
+    : new URL("red-duck.gif", script?.src || document.baseURI).href;
   const persistPosition =
     script?.dataset.persistPosition?.toLowerCase() !== "false";
 
@@ -29,20 +30,24 @@
   let duckPosY = 32;
   let pointerPosX = duckPosX;
   let pointerPosY = duckPosY;
-  let frameCount = 0;
+  let isMoving = false;
+  let movementDirection = null;
+  let movementTime = 0;
   let idleTime = 0;
+  let nextIdleAnimationAt = randomIdleDelay();
   let idleAnimation = null;
-  let idleAnimationFrame = 0;
+  let idleAnimationTime = 0;
+  let mirrored = false;
+  let currentSprite = null;
   let lastFrameTimestamp;
 
   // Each frame is [column, row, mirrorHorizontally] in the 8 x 4 sheet.
   const spriteSets = {
     idle: [[3, 3]],
-    alert: [[1, 2]],
     flapping: [
-      [3, 2],
+      [3, 3],
+      [1, 3],
       [1, 2],
-      [3, 2],
       [1, 3],
     ],
     tired: [[3, 1]],
@@ -55,32 +60,32 @@
       [7, 3],
     ],
     NE: [
-      [6, 2],
-      [5, 3],
+      [6, 0],
+      [6, 1],
     ],
     E: [
-      [4, 2],
-      [4, 3],
+      [1, 0],
+      [1, 1],
     ],
     SE: [
       [2, 2],
       [2, 3],
     ],
     S: [
-      [1, 2],
-      [1, 3],
+      [0, 0],
+      [0, 1],
     ],
     SW: [
       [2, 2, true],
       [2, 3, true],
     ],
     W: [
-      [4, 2, true],
-      [4, 3, true],
+      [1, 0, true],
+      [1, 1, true],
     ],
     NW: [
-      [6, 2, true],
-      [5, 3, true],
+      [6, 0, true],
+      [6, 1, true],
     ],
   };
 
@@ -93,8 +98,9 @@
   }
 
   function placeDuck() {
-    duckEl.style.left = `${duckPosX - frameSize / 2}px`;
-    duckEl.style.top = `${duckPosY - frameSize / 2}px`;
+    duckEl.style.transform = `translate3d(${duckPosX - frameSize / 2}px, ${
+      duckPosY - frameSize / 2
+    }px, 0) scaleX(${mirrored ? -1 : 1})`;
   }
 
   function loadPosition() {
@@ -131,83 +137,106 @@
 
   function setSprite(name, frame) {
     const frames = spriteSets[name];
-    const [column, row, mirrored = false] = frames[frame % frames.length];
+    const [column, row, nextMirrored = false] = frames[frame % frames.length];
+    const sprite = `${column}:${row}:${nextMirrored}`;
+
+    if (sprite === currentSprite) return;
+
+    currentSprite = sprite;
     duckEl.style.backgroundPosition = `${-column * frameSize}px ${
       -row * frameSize
     }px`;
-    duckEl.style.transform = mirrored ? "scaleX(-1)" : "none";
+    if (mirrored !== nextMirrored) {
+      mirrored = nextMirrored;
+      placeDuck();
+    }
   }
 
-  function resetIdleAnimation() {
+  function randomIdleDelay() {
+    return 10000 + Math.random() * 20000;
+  }
+
+  function resetIdleState() {
+    idleTime = 0;
+    nextIdleAnimationAt = randomIdleDelay();
     idleAnimation = null;
-    idleAnimationFrame = 0;
+    idleAnimationTime = 0;
   }
 
-  function idle() {
-    idleTime += 1;
+  function idle(deltaTime) {
+    idleTime += deltaTime;
 
-    if (
-      idleTime > 10 &&
-      Math.floor(Math.random() * 200) === 0 &&
-      idleAnimation === null
-    ) {
+    if (idleTime >= nextIdleAnimationAt && idleAnimation === null) {
       idleAnimation = Math.random() < 0.5 ? "sleeping" : "flapping";
+      idleAnimationTime = 0;
     }
 
     switch (idleAnimation) {
       case "sleeping":
-        if (idleAnimationFrame < 8) {
+        idleAnimationTime += deltaTime;
+        if (idleAnimationTime < 800) {
           setSprite("tired", 0);
-          break;
+        } else {
+          setSprite("sleeping", Math.floor((idleAnimationTime - 800) / 500));
         }
-        setSprite("sleeping", Math.floor(idleAnimationFrame / 4));
-        if (idleAnimationFrame > 192) {
-          resetIdleAnimation();
-          return;
+        if (idleAnimationTime > 12000) {
+          resetIdleState();
+          setSprite("idle", 0);
         }
         break;
       case "flapping":
-        setSprite("flapping", Math.floor(idleAnimationFrame / 2));
-        if (idleAnimationFrame > 15) {
-          resetIdleAnimation();
-          return;
+        idleAnimationTime += deltaTime;
+        setSprite("flapping", Math.floor(idleAnimationTime / 150));
+        if (idleAnimationTime > 1200) {
+          resetIdleState();
+          setSprite("idle", 0);
         }
         break;
       default:
         setSprite("idle", 0);
-        return;
     }
-
-    idleAnimationFrame += 1;
   }
 
-  function frame() {
-    frameCount += 1;
+  function frame(deltaTime) {
     const diffX = duckPosX - pointerPosX;
     const diffY = duckPosY - pointerPosY;
     const distance = Math.hypot(diffX, diffY);
 
-    if (distance < duckSpeed || distance < 48) {
-      idle();
+    if (distance <= stopDistance) {
+      if (isMoving) {
+        isMoving = false;
+        movementDirection = null;
+        movementTime = 0;
+        resetIdleState();
+      }
+      idle(deltaTime);
       return;
     }
 
-    resetIdleAnimation();
-
-    if (idleTime > 1) {
-      setSprite("alert", 0);
-      idleTime = Math.min(idleTime, 7) - 1;
-      return;
+    if (!isMoving) {
+      isMoving = true;
+      resetIdleState();
     }
 
     let direction = diffY / distance > 0.5 ? "N" : "";
     direction += diffY / distance < -0.5 ? "S" : "";
     direction += diffX / distance > 0.5 ? "W" : "";
     direction += diffX / distance < -0.5 ? "E" : "";
-    setSprite(direction, frameCount);
 
-    duckPosX -= (diffX / distance) * duckSpeed;
-    duckPosY -= (diffY / distance) * duckSpeed;
+    if (direction !== movementDirection) {
+      movementDirection = direction;
+      movementTime = 0;
+    } else {
+      movementTime += deltaTime;
+    }
+    setSprite(direction, Math.floor(movementTime / spriteFrameDuration));
+
+    const step = Math.min(
+      (duckSpeed * deltaTime) / 1000,
+      distance - stopDistance,
+    );
+    duckPosX -= (diffX / distance) * step;
+    duckPosY -= (diffY / distance) * step;
     duckPosX = clampPosition(duckPosX, window.innerWidth);
     duckPosY = clampPosition(duckPosY, window.innerHeight);
     placeDuck();
@@ -216,11 +245,11 @@
   function onAnimationFrame(timestamp) {
     if (!duckEl.isConnected) return;
 
-    if (!lastFrameTimestamp) lastFrameTimestamp = timestamp;
-    if (timestamp - lastFrameTimestamp > 100) {
-      lastFrameTimestamp = timestamp;
-      frame();
+    if (lastFrameTimestamp !== undefined) {
+      const deltaTime = Math.min(timestamp - lastFrameTimestamp, 50);
+      frame(deltaTime);
     }
+    lastFrameTimestamp = timestamp;
     window.requestAnimationFrame(onAnimationFrame);
   }
 
@@ -242,11 +271,17 @@
       width: `${frameSize}px`,
       height: `${frameSize}px`,
       position: "fixed",
+      left: "0",
+      top: "0",
       pointerEvents: "none",
       imageRendering: "pixelated",
       zIndex: "2147483647",
       backgroundImage: `url("${duckFile}")`,
+      backgroundRepeat: "no-repeat",
+      backgroundSize: `${sheetWidth}px ${sheetHeight}px`,
+      overflow: "hidden",
       transformOrigin: "center",
+      willChange: "transform",
     });
     setSprite("idle", 0);
     placeDuck();
